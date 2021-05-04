@@ -9,45 +9,56 @@ def calculate_demographic_data(print_data=True):
     # Read adult data from the csv file into a pandas DataFrame object
     df = pd.read_csv("adult.data.csv")
 
-    # How many of each race are represented in this dataset? This should be a Pandas series with race names as the index labels.
+    # Q1 : How many of each race are represented in this dataset? This should be a Pandas series with race names as the index labels.
     # Select the "race" column and count the values, return a pandas series.
     # df["race"] == df.race
     # df.value_counts(subset=["race"]) will also work.
     race_count = df.value_counts(df["race"])
 
-    # What is the average age of men?
+    # Q2 : What is the average age of men?
     # Select "sex" column with value of "Male", and return mean() of "age" column
     average_age_men = df.loc[df["sex"] == "Male", "age"].mean()
 
-    # What is the percentage of people who have a Bachelor's degree?
-    # b = df.value_counts(df["education"] == "Bachelors", normalize=True)
-    # percentage_bachelors = b[True] * 100
+    # Q3 : What is the percentage of people who have a Bachelor's degree?
+    # bachelors = df.value_counts(df["education"] == "Bachelors", normalize=True)
+    # percentage_bachelors = bachelors[True] * 100
     percentage_bachelors = len(df.loc[df["education"] == "Bachelors"]) * 100 / len(df)
 
-    # What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K?
-    # What percentage of people without advanced education make more than 50K?
+    # Q4 : What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K?
+    # Pick out people with advanced "education", and get the "salary" column.
+    higher_education = df[
+        (df["education"] == "Bachelors") |
+        (df["education"] == "Masters") |
+        (df["education"] == "Doctorate")
+    ]["salary"]
+    # Count people with `Bachelors`, `Masters`, or `Doctorate` and make >50K.
+    over_50k = higher_education.value_counts()[">50K"]
+    # Percentage of people with advanced education and make >50K
+    higher_education_rich = over_50k * 100 / len(higher_education)
 
-    # with and without `Bachelors`, `Masters`, or `Doctorate`
-    higher_education = None
-    lower_education = None
+    # Q5 : What percentage of people without advanced education make more than 50K?
+    # All people who make >50K
+    total_over_50k = df["salary"].value_counts()[">50K"]
 
-    # percentage with salary >50K
-    higher_education_rich = None
-    lower_education_rich = None
+    # People without `Bachelors`, `Masters`, or `Doctorate` and make >50K
+    lower_education = total_over_50k - over_50k
 
-    # What is the minimum number of hours a person works per week (hours-per-week feature)?
+    # Percentage of people without advanced education and make >50K
+    lower_education_rich = lower_education * 100 / (len(df) - len(higher_education))
+
+    # Q6 : What is the minimum number of hours a person works per week (hours-per-week feature)?
     min_work_hours = None
 
-    # What percentage of the people who work the minimum number of hours per week have a salary of >50K?
+    # Q7 : What percentage of the people who work the minimum number of hours per week have a salary of >50K?
     num_min_workers = None
 
     rich_percentage = None
 
-    # What country has the highest percentage of people that earn >50K?
+    # Q8 : What country has the highest percentage of people that earn >50K?
     highest_earning_country = None
     highest_earning_country_percentage = None
 
-    # Identify the most popular occupation for those who earn >50K in India.
+    # Q9 : Identify the most popular occupation for those who earn >50K in India.
     top_IN_occupation = None
 
     # DO NOT MODIFY BELOW THIS LINE
