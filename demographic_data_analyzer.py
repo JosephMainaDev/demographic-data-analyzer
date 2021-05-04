@@ -1,6 +1,11 @@
 import pandas as pd
 
 def calculate_demographic_data(print_data=True):
+    """
+    Using pandas to analyse demographic data.
+
+    The demographic data was extracted from the 1994 Census database and saved in a CSV file.
+    """
     # Read adult data from the csv file into a pandas DataFrame object
     df = pd.read_csv("adult.data.csv")
 
