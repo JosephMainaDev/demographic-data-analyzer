@@ -40,27 +40,34 @@ def calculate_demographic_data(print_data=True):
     # Q5 : What percentage of people without advanced education make more than 50K?
     # All people who make >50K
     total_over_50k = df["salary"].value_counts()[">50K"]
-
     # People without `Bachelors`, `Masters`, or `Doctorate` and make >50K
     lower_education = total_over_50k - over_50k
-
     # Percentage of people without advanced education and make >50K
     lower_education_rich = round(lower_education * 100 / (len(df) - len(higher_education)), 1)
 
     # Q6 : What is the minimum number of hours a person works per week (hours-per-week feature)?
-    min_work_hours = None
+    min_work_hours = df["hours-per-week"].min()
 
     # Q7 : What percentage of the people who work the minimum number of hours per week have a salary of >50K?
-    num_min_workers = None
-
-    rich_percentage = None
+    # Pick workers who work minimum number of hours, take the "salary" column
+    min_workers = df.loc[df["hours-per-week"] == min_work_hours, "salary"]
+    num_min_workers = min_workers.count()
+    # Percentage of the people who work the minimum number of hours per week and make >50K.
+    rich_percentage = round(min_workers.value_counts()[">50K"] * 100 / num_min_workers, 1)
 
     # Q8 : What country has the highest percentage of people that earn >50K?
+    country_over50k = df
     highest_earning_country = None
+
+    # Q9 : What is the highest percentage of rich people in the country?
     highest_earning_country_percentage = None
 
-    # Q9 : Identify the most popular occupation for those who earn >50K in India.
-    top_IN_occupation = None
+    # Q10 : Identify the most popular occupation for those who earn >50K in India.
+    # Pick people who work in India, getting their "occupation" and "salary".
+    indians = df.loc[df["native-country"] == "India", ["occupation", "salary"]]
+    # Get "occupation" of Indians who make >50K
+    over50k_indians = indians.loc[indians["salary"] == ">50K", "occupation"]
+    top_IN_occupation = over50k_indians.value_counts().idxmax()
 
     # DO NOT MODIFY BELOW THIS LINE
 
