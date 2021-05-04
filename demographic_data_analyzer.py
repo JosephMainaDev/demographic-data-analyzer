@@ -5,6 +5,7 @@ def calculate_demographic_data(print_data=True):
     Using pandas to analyse demographic data.
 
     The demographic data was extracted from the 1994 Census database and saved in a CSV file.
+    All floats are rounded to the nearest tenth.
     """
     # Read adult data from the csv file into a pandas DataFrame object
     df = pd.read_csv("adult.data.csv")
@@ -17,12 +18,12 @@ def calculate_demographic_data(print_data=True):
 
     # Q2 : What is the average age of men?
     # Select "sex" column with value of "Male", and return mean() of "age" column
-    average_age_men = df.loc[df["sex"] == "Male", "age"].mean()
+    average_age_men = round(df.loc[df["sex"] == "Male", "age"].mean(), 1)
 
     # Q3 : What is the percentage of people who have a Bachelor's degree?
     # bachelors = df.value_counts(df["education"] == "Bachelors", normalize=True)
     # percentage_bachelors = bachelors[True] * 100
-    percentage_bachelors = len(df.loc[df["education"] == "Bachelors"]) * 100 / len(df)
+    percentage_bachelors = round(len(df.loc[df["education"] == "Bachelors"]) * 100 / len(df), 1)
 
     # Q4 : What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K?
     # Pick out people with advanced "education", and get the "salary" column.
@@ -34,7 +35,7 @@ def calculate_demographic_data(print_data=True):
     # Count people with `Bachelors`, `Masters`, or `Doctorate` and make >50K.
     over_50k = higher_education.value_counts()[">50K"]
     # Percentage of people with advanced education and make >50K
-    higher_education_rich = over_50k * 100 / len(higher_education)
+    higher_education_rich = round(over_50k * 100 / len(higher_education), 1)
 
     # Q5 : What percentage of people without advanced education make more than 50K?
     # All people who make >50K
@@ -44,7 +45,7 @@ def calculate_demographic_data(print_data=True):
     lower_education = total_over_50k - over_50k
 
     # Percentage of people without advanced education and make >50K
-    lower_education_rich = lower_education * 100 / (len(df) - len(higher_education))
+    lower_education_rich = round(lower_education * 100 / (len(df) - len(higher_education)), 1)
 
     # Q6 : What is the minimum number of hours a person works per week (hours-per-week feature)?
     min_work_hours = None
@@ -64,7 +65,7 @@ def calculate_demographic_data(print_data=True):
     # DO NOT MODIFY BELOW THIS LINE
 
     if print_data:
-        print("Number of each race:\n", race_count) 
+        print("Number of each race:\n", race_count)
         print("Average age of men:", average_age_men)
         print(f"Percentage with Bachelors degrees: {percentage_bachelors}%")
         print(f"Percentage with higher education that earn >50K: {higher_education_rich}%")
